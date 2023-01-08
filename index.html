@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.46.1/dist/full.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body class="background-color">
+    <header class="container mx-auto">
+
+        <div class="navbar ">
+            <div class="flex-1">
+                <button class="normal-case text-xl poppins-500 text-black"><span
+                        class="logo-bg px-2 py-1 text-white rounded-lg mr-1">News</span>Portal</button>
+            </div>
+            <div class="flex-none">
+                <ul class="menu menu-horizontal px-1">
+                    <li><button onclick="newsClicked()" class="poppins-400 text-violate-hover-navbar"
+                            id="news-btn-nav">News</button></li>
+
+                    <li><button onclick="blogClicked()" id="blog-btn-nav"
+                            class="poppins-400 text-violate-hover-navbar">Blog</button></li>
+                </ul>
+            </div>
+        </div>
+        <hr class="mb-3">
+        <!-- blog-section- -->
+        <section class="hidden" id="blog-sec">
+            <h1 class="text-center poppins-500 text-red-600 text-2xl mt-5 pt-5">No Blog found!!</h1>
+        </section>
+    </header>
+    <main class="pb-5" id="main">
+        <!-- cetagory-section -->
+        <section>
+            <div id="category-container" class="flex justify-center flex-wrap">
+
+            </div>
+        </section>
+        <!-- items found status -->
+        <section class="container mx-auto w-4/5 bg-white mt-5 mb-5 rounded-lg">
+            <h1 id="item-found-status" class="p-5 poppins-400 text-2xl text-black"></h1>
+        </section>
+        <!-- sort-section -->
+
+        <section class="container mx-auto w-4/5">
+            <div class="flex items-center gap-2" id="sort-btn-div">
+                <h3 class="poppins-400 sm:text-xs lg:text-xl text-black">Sort By :</h3>
+                <div class="dropdown dropdown-bottom">
+                    <button tabindex="0" class="btn sort-btn m-1 gap-32 w-48 lg:w-60 normal-case flex justify-between"
+                        id="default-sort-text">
+                        <h3 id="default-text">Default</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </button>
+                    <ul tabindex="0" class="dropdown-content ml-1 w-64 background-color rounded-lg drop-shadow-xl">
+
+                        <li><button onclick="viewSort()" class="btn mt-1 sort-btn w-64 rounded-lg normal-case">
+                                <div class="w-full flex justify-between items-center" id="high-view-btn-sort">
+                                    Most Viewed
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+
+                                </div>
+                            </button></li>
+
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- news section -->
+        <section id="news-section" class="">
+            <div class=" pt-5 flex flex-col gap-5" id="news-container">
+
+            </div>
+        </section>
+        <!-- news not available -->
+        <section class="hidden" id="no-news-sec">
+            <h1 class="text-center poppins-500 text-red-600 text-2xl mt-5 pt-5">There is no news in this category!!</h1>
+        </section>
+        <!-- spinner section -->
+        <section class="hidden" id="spinner-sec">
+            <div class="text-center">
+                <div role="status">
+                    <svg aria-hidden="true" class="inline w-8 h-8 mr-2 text-gray-200 animate-spin  fill-blue-600"
+                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor" />
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill" />
+                    </svg>
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </section>
+        <!-- modal-section--news -->
+        <section>
+
+            <input type="checkbox" id="my-modal-3" class="modal-toggle" />
+            <div class="modal">
+                <div class="modal-box relative hidden background-color" id="modal-load">
+                    <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-1 top-1">✕</label>
+                    <img id="modal-picture" src="" alt="">
+                    <h3 class="text-lg font-bold mt-2 text-black poppins-400" id="news-modal-heading"></h3>
+                    <p class="py-4 gray-font poppins-300" id="news-detail"></p>
+                    <div class="flex items-center">
+                        <img class="w-10 h-10 rounded-full mr-4" id="author-pic-modal" alt="Avatar of Writer">
+                        <div class="flex justify-between w-full">
+                            <div class="text-sm">
+                                <p class="gray-font leading-none font-semibold" id="author-name-modal"></p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <p class="gray-font leading-none mt-3 ml-5 gray-font poppins-300" id="publish-date-modal"></p>
+                    <p class="gray-font leading-none mt-2 ml-5 gray-font poppins-300" id="rating-modal"></p>
+        </section>
+
+    </main>
+    <footer class="bg-white mt-5">
+        <h3 class="text-center poppins-400 text-lg gray-font py-4">Copyright 2023 News Portal</h3>
+    </footer>
+    <script src="js/blog.js"></script>
+    <script src="js/category.js"></script>
+    <script src="js/news.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/loading.js"></script>
+    <script src="js/news-modal.js"></script>
+    <script src="js/sort.js"></script>
+</body>
+
+</html>
